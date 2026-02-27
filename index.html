@@ -1003,39 +1003,183 @@
     aspect-ratio: 1;
     border-radius: 3px;
     overflow: hidden;
-    background: linear-gradient(145deg, #1e3a3b, #2A5D5E, #3D8384);
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #1a3a3b;
   }
-  .map-placeholder {
-    text-align: center;
-    z-index: 2;
+  /* Custom denah / illustrated map */
+  .denah {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(42,93,94,0.4) 0%, transparent 70%),
+      linear-gradient(145deg, #1a3a3b 0%, #1e4a4b 40%, #2A5D5E 100%);
   }
-  .map-placeholder svg {
-    width: 48px;
-    height: 48px;
-    stroke: var(--gold);
-    fill: none;
-    stroke-width: 1.2;
-    margin-bottom: 1rem;
-  }
-  .map-placeholder p {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.5);
-  }
-  .location-map::after {
+  /* Grid lines */
+  .denah::before {
     content: '';
     position: absolute;
     inset: 0;
-    opacity: 0.06;
+    opacity: 0.05;
     background-image:
-      linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px);
-    background-size: 40px 40px;
+      radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  /* Decorative road lines */
+  .denah-roads {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .denah-roads svg {
+    width: 100%;
+    height: 100%;
+  }
+  /* Center pin — Aeritha */
+  .denah-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    cursor: pointer;
+  }
+  .denah-center a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+  }
+  .denah-pin {
+    width: 56px;
+    height: 56px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 8px rgba(201,169,110,0.15), 0 0 0 20px rgba(201,169,110,0.06), 0 4px 20px rgba(0,0,0,0.3);
+    animation: pulse-pin 2.5s ease-in-out infinite;
+    margin-bottom: 0.6rem;
+  }
+  .denah-pin svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--dark);
+    fill: none;
+    stroke-width: 1.8;
+  }
+  .denah-center-label {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.08em;
+  }
+  .denah-center-sub {
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 0.15rem;
+  }
+  @keyframes pulse-pin {
+    0%, 100% { box-shadow: 0 0 0 8px rgba(201,169,110,0.15), 0 0 0 20px rgba(201,169,110,0.06), 0 4px 20px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(201,169,110,0.2), 0 0 0 28px rgba(201,169,110,0.08), 0 4px 20px rgba(0,0,0,0.3); }
+  }
+  /* POI items */
+  .denah-poi {
+    position: absolute;
+    z-index: 5;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease-smooth);
+  }
+  .denah-poi:hover { transform: scale(1.08); }
+  .denah-poi a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    gap: 0.35rem;
+  }
+  .poi-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(255,255,255,0.7);
+    transition: all 0.3s;
+  }
+  .denah-poi:hover .poi-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(201,169,110,0.2);
+  }
+  .poi-label {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.8);
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+  .denah-poi:hover .poi-label { color: var(--gold); }
+  .poi-dist {
+    font-family: var(--font-body);
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+  }
+  .denah-poi:hover .poi-dist { color: rgba(255,255,255,0.6); }
+  /* Dashed connector lines from center to POIs */
+  .denah-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .denah-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+  /* Compass */
+  .denah-compass {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 8;
+    opacity: 0.3;
+    text-align: center;
+  }
+  .denah-compass svg {
+    width: 36px;
+    height: 36px;
+  }
+  .denah-compass span {
+    display: block;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.2rem;
+  }
+  /* Click hint */
+  .denah-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 8;
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
   }
 
   /* ========== FAQ ========== */
@@ -1605,11 +1749,11 @@
       </p>
       <div class="nearby-list">
         <div class="nearby-item">
-          <span class="ni-name">Ngurah Rai Airport</span>
-          <span class="ni-dist">25 min drive</span>
+          <span class="ni-name">Uluwatu Temple</span>
+          <span class="ni-dist">15 min drive</span>
         </div>
         <div class="nearby-item">
-          <span class="ni-name">Pandawa Beach</span>
+          <span class="ni-name">GWK Cultural Park</span>
           <span class="ni-dist">10 min drive</span>
         </div>
         <div class="nearby-item">
@@ -1617,19 +1761,115 @@
           <span class="ni-dist">12 min drive</span>
         </div>
         <div class="nearby-item">
-          <span class="ni-name">Sundays Beach Club</span>
-          <span class="ni-dist">8 min drive</span>
+          <span class="ni-name">Balangan Beach</span>
+          <span class="ni-dist">18 min drive</span>
         </div>
         <div class="nearby-item">
-          <span class="ni-name">Four Points by Sheraton</span>
-          <span class="ni-dist">Nearby</span>
+          <span class="ni-name">Pandawa Beach</span>
+          <span class="ni-dist">10 min drive</span>
+        </div>
+        <div class="nearby-item">
+          <span class="ni-name">Ngurah Rai Airport</span>
+          <span class="ni-dist">25 min drive</span>
         </div>
       </div>
     </div>
+    <!-- Custom Illustrated Denah Map -->
     <div class="location-map reveal reveal-delay-2">
-      <div class="map-placeholder">
-        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <p>Ungasan, Bukit Peninsula</p>
+      <div class="denah">
+        <!-- Dashed connector lines -->
+        <svg class="denah-lines" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
+              <polygon points="0 0, 6 2, 0 4" fill="rgba(255,255,255,0.12)" />
+            </marker>
+          </defs>
+          <!-- Lines from center (250,250) to each POI -->
+          <line x1="250" y1="250" x2="105" y2="395" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+          <line x1="250" y1="250" x2="355" y2="105" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+          <line x1="250" y1="250" x2="130" y2="145" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+          <line x1="250" y1="250" x2="80" y2="225" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+          <line x1="250" y1="250" x2="385" y2="350" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+          <line x1="250" y1="250" x2="380" y2="225" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6" marker-end="url(#arrowhead)"/>
+        </svg>
+
+        <!-- Center: Aeritha -->
+        <div class="denah-center">
+          <a href="https://www.google.com/maps?q=-8.812230883866079,115.15752756979111" target="_blank" rel="noopener">
+            <div class="denah-pin">
+              <svg viewBox="0 0 24 24"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>
+            </div>
+            <span class="denah-center-label">Aeritha</span>
+            <span class="denah-center-sub">Ungasan, Bali</span>
+          </a>
+        </div>
+
+        <!-- POI: Uluwatu Temple — southwest -->
+        <div class="denah-poi" style="bottom: 12%; left: 10%;">
+          <a href="https://www.google.com/maps/place/Uluwatu+Temple" target="_blank" rel="noopener">
+            <span class="poi-label">Uluwatu Temple</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">15 min drive</span>
+          </a>
+        </div>
+
+        <!-- POI: GWK Cultural Park — northeast -->
+        <div class="denah-poi" style="top: 14%; right: 14%;">
+          <a href="https://www.google.com/maps/place/Garuda+Wisnu+Kencana+Cultural+Park" target="_blank" rel="noopener">
+            <span class="poi-label">GWK Cultural Park</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">10 min drive</span>
+          </a>
+        </div>
+
+        <!-- POI: Melasti Beach — northwest -->
+        <div class="denah-poi" style="top: 20%; left: 14%;">
+          <a href="https://www.google.com/maps/place/Melasti+Beach" target="_blank" rel="noopener">
+            <span class="poi-label">Melasti Beach</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">12 min drive</span>
+          </a>
+        </div>
+
+        <!-- POI: Balangan Beach — west -->
+        <div class="denah-poi" style="top: 40%; left: 4%;">
+          <a href="https://www.google.com/maps/place/Balangan+Beach" target="_blank" rel="noopener">
+            <span class="poi-label">Balangan Beach</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">18 min drive</span>
+          </a>
+        </div>
+
+        <!-- POI: Pandawa Beach — southeast -->
+        <div class="denah-poi" style="bottom: 18%; right: 10%;">
+          <a href="https://www.google.com/maps/place/Pandawa+Beach" target="_blank" rel="noopener">
+            <span class="poi-label">Pandawa Beach</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">10 min drive</span>
+          </a>
+        </div>
+
+        <!-- POI: Ngurah Rai Airport — east -->
+        <div class="denah-poi" style="top: 38%; right: 6%;">
+          <a href="https://www.google.com/maps/place/Ngurah+Rai+International+Airport" target="_blank" rel="noopener">
+            <span class="poi-label">Ngurah Rai Airport</span>
+            <span class="poi-dot"></span>
+            <span class="poi-dist">25 min drive</span>
+          </a>
+        </div>
+
+        <!-- Compass -->
+        <div class="denah-compass">
+          <svg viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+            <polygon points="20,4 17,22 20,19 23,22" fill="rgba(201,169,110,0.5)"/>
+            <polygon points="20,36 17,18 20,21 23,18" fill="rgba(255,255,255,0.15)"/>
+          </svg>
+          <span>N</span>
+        </div>
+
+        <!-- Hint -->
+        <span class="denah-hint">Click any location to open in Google Maps</span>
       </div>
     </div>
   </div>
