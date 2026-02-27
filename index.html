@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeritha — Smart Budget-Boutique Hotel · Ungasan, Bali</title>
+<meta name="description" content="Aeritha — A 40-room smart budget-boutique hotel in Ungasan, Bali. Design like a boutique. Price like a budget. Where the breeze meets the soul.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ========== DESIGN TOKENS (Brand Guidelines) ========== */
+  :root {
+    --deep-teal: #2A5D5E;
+    --soft-teal: #3D8384;
+    --light-teal: #E8F4F4;
+    --cream: #F5F0EB;
+    --sand: #E8DFD4;
+    --warm-stone: #C4B5A4;
+    --gold: #C9A96E;
+    --gold-light: #D4BC8E;
+    --dark: #1A1A1A;
+    --white: #FFFFFF;
+    --text-body: #4A4A4A;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Outfit', sans-serif;
+    --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --shadow-soft: 0 4px 30px rgba(0,0,0,0.06);
+    --shadow-medium: 0 8px 40px rgba(0,0,0,0.10);
+  }
+
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-body);
+    color: var(--dark);
+    background: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ========== UTILITY ========== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.3;
+  }
+  .gold-line {
+    width: 50px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem 0;
+  }
+  .gold-line.center { margin: 1.5rem auto; }
+
+  /* Reveal animation base */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.9s var(--ease-smooth), transform 0.9s var(--ease-smooth);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.25s; }
+  .reveal-delay-3 { transition-delay: 0.4s; }
+  .reveal-delay-4 { transition-delay: 0.55s; }
+
+  /* ========== NAVIGATION ========== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.8rem 4rem;
+    transition: all 0.5s var(--ease-smooth);
+  }
+  nav.scrolled {
+    background: rgba(245, 240, 235, 0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 1rem 4rem;
+    box-shadow: 0 1px 30px rgba(0,0,0,0.05);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    transition: color 0.5s;
+  }
+  nav.scrolled .nav-logo { color: var(--dark); }
+  .nav-links {
+    display: flex;
+    gap: 2.2rem;
+    align-items: center;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.3s var(--ease-smooth);
+  }
+  .nav-links a:hover::after { width: 100%; }
+  nav.scrolled .nav-links a { color: var(--text-body); }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-book {
+    padding: 0.55rem 1.6rem;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-size: 0.65rem !important;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.35s var(--ease-smooth);
+  }
+  .nav-book::after { display: none !important; }
+  nav.scrolled .nav-book {
+    border-color: var(--deep-teal);
+    color: var(--deep-teal) !important;
+  }
+  .nav-book:hover {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--dark) !important;
+  }
+
+  /* Mobile hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1001;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--dark); }
+  .nav-hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 5px); }
+  .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -5px); }
+
+  /* Mobile nav overlay */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.97);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .mobile-nav.open { opacity: 1; pointer-events: all; }
+  .mobile-nav a {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    transition: color 0.3s;
+  }
+  .mobile-nav a:hover { color: var(--gold); }
+
+  /* ========== HERO ========== */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg,
+        rgba(0,0,0,0.20) 0%,
+        rgba(0,0,0,0.02) 35%,
+        rgba(0,0,0,0.40) 100%),
+      linear-gradient(155deg,
+        #1e4a4b 0%,
+        #2A5D5E 20%,
+        #3D8384 45%,
+        #5BA3A4 60%,
+        #C9A96E 82%,
+        #E8DFD4 100%);
+    background-size: cover;
+  }
+  /* Texture overlay */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: var(--white);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-smooth) 0.2s forwards;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 11vw, 9rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    line-height: 0.95;
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    animation: fadeUp 1.2s var(--ease-smooth) 0.4s forwards;
+  }
+  .hero-line {
+    width: 50px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-smooth) 0.6s forwards;
+  }
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-smooth) 0.8s forwards;
+  }
+  .hero-cta {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-smooth);
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-smooth) 1s forwards;
+  }
+  .hero-cta:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  .scroll-indicator span {
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  }
+
+  /* ========== INTRO ========== */
+  .intro {
+    padding: 8rem 4rem;
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .intro h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.45;
+    color: var(--dark);
+    margin-bottom: 1.8rem;
+  }
+  .intro p {
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text-body);
+  }
+
+  /* ========== FEATURES / PILLARS ========== */
+  .pillars {
+    padding: 2rem 4rem 8rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+  .pillar-card {
+    text-align: center;
+    padding: 3rem 2.2rem;
+    background: var(--white);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth);
+  }
+  .pillar-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+  }
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--deep-teal), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-smooth);
+  }
+  .pillar-card:hover::before { transform: scaleX(1); }
+  .pillar-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pillar-icon svg {
+    width: 34px;
+    height: 34px;
+    stroke: var(--deep-teal);
+    fill: none;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .pillar-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+    color: var(--dark);
+  }
+  .pillar-card p {
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--text-body);
+  }
+
+  /* ========== POSITIONING / WHY AERITHA ========== */
+  .positioning {
+    background: var(--deep-teal);
+    padding: 7rem 4rem;
+    overflow: hidden;
+  }
+  .positioning-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .positioning-text .section-label { color: var(--gold-light); }
+  .positioning-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 1.5rem;
+  }
+  .positioning-text p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+  }
+  .positioning-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    transition: border-color 0.3s;
+  }
+  .stat-item:hover { border-color: var(--gold); }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+  .positioning-visual {
+    position: relative;
+  }
+  .pos-card-stack {
+    position: relative;
+    aspect-ratio: 4/5;
+  }
+  .pos-card {
+    position: absolute;
+    width: 75%;
+    padding: 2.5rem;
+    border-radius: 3px;
+    background: var(--white);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  }
+  .pos-card:nth-child(1) { top: 0; left: 0; z-index: 3; }
+  .pos-card:nth-child(2) { top: 12%; left: 18%; z-index: 2; background: var(--sand); }
+  .pos-card:nth-child(3) { top: 24%; left: 10%; z-index: 1; background: var(--light-teal); }
+  .pos-card-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--warm-stone);
+    margin-bottom: 0.5rem;
+  }
+  .pos-card-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 0.6rem;
+  }
+  .pos-card-desc {
+    font-size: 0.78rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  /* ========== ROOM ========== */
+  .room-section {
+    background: var(--dark);
+    color: var(--white);
+    padding: 8rem 4rem;
+  }
+  .room-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .room-header .section-label { color: var(--gold); }
+  .room-header h2 { color: var(--white); }
+  .room-showcase {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .room-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 3px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #1e4a4b, var(--soft-teal), #5BA3A4);
+  }
+  .room-visual-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image:
+      radial-gradient(circle at 25% 35%, rgba(255,255,255,0.4) 1px, transparent 1px),
+      radial-gradient(circle at 75% 65%, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 28px 28px, 42px 42px;
+  }
+  .room-visual-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    text-align: center;
+    z-index: 2;
+  }
+  .room-visual-icon {
+    width: 80px;
+    height: 80px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .room-visual-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--gold-light);
+    fill: none;
+    stroke-width: 1.2;
+  }
+  .room-visual h3 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+  .room-visual .room-type-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+  .room-details h3 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+  .room-details .room-tagline {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2rem;
+  }
+  .room-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+  .room-spec {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .room-spec-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .room-spec-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+  }
+  .room-spec-text h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.15rem;
+  }
+  .room-spec-text span {
+    font-size: 0.75rem;
+    font-weight: 200;
+    color: rgba(255,255,255,0.5);
+  }
+  .room-price-bar {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .room-price-bar .price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+  }
+  .room-price-bar .price-note {
+    font-size: 0.75rem;
+    font-weight: 200;
+    color: rgba(255,255,255,0.4);
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.35s var(--ease-smooth);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  /* ========== SELF CHECK-IN ========== */
+  .checkin {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .checkin-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: linear-gradient(155deg, var(--deep-teal), var(--soft-teal), #5BA3A4);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .checkin-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(201,169,110,0.15), transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08), transparent 50%);
+  }
+  .phone-mockup {
+    width: 190px;
+    background: var(--white);
+    border-radius: 28px;
+    padding: 10px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+    transform: rotate(-4deg);
+    position: relative;
+    z-index: 2;
+  }
+  .phone-notch {
+    width: 80px;
+    height: 6px;
+    background: var(--cream);
+    border-radius: 3px;
+    margin: 6px auto 12px;
+  }
+  .phone-screen {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 1.5rem 1.2rem;
+    min-height: 330px;
+  }
+  .phone-header {
+    text-align: center;
+    margin-bottom: 1.4rem;
+  }
+  .phone-header .ph-logo {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--deep-teal);
+    letter-spacing: 0.1em;
+  }
+  .phone-header .ph-sub {
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-stone);
+    margin-top: 0.2rem;
+  }
+  .phone-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.6rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .phone-card .pc-label {
+    font-size: 0.45rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-stone);
+    margin-bottom: 0.2rem;
+  }
+  .phone-card .pc-value {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    color: var(--dark);
+  }
+  .phone-btn {
+    display: block;
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--deep-teal);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0.8rem;
+  }
+  .checkin-content .section-label { text-align: left; }
+  .checkin-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: 1.2rem;
+  }
+  .checkin-content > p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text-body);
+    margin-bottom: 2.5rem;
+  }
+  .checkin-steps { display: flex; flex-direction: column; gap: 1.5rem; }
+  .step {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--gold);
+    transition: all 0.3s;
+  }
+  .step:hover .step-num {
+    background: var(--gold);
+    color: var(--dark);
+  }
+  .step-text h4 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+  }
+  .step-text p {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--text-body);
+    line-height: 1.6;
+  }
+
+  /* ========== EXPERIENCE ========== */
+  .experience {
+    background: var(--sand);
+    padding: 8rem 4rem;
+    text-align: center;
+  }
+  .experience .section-title { margin-bottom: 4rem; }
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .exp-item {
+    padding: 2.5rem 1.5rem;
+    background: rgba(255,255,255,0.5);
+    border-radius: 3px;
+    transition: all 0.35s var(--ease-smooth);
+  }
+  .exp-item:hover {
+    transform: translateY(-4px);
+    background: var(--white);
+    box-shadow: var(--shadow-soft);
+  }
+  .exp-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 1.2rem;
+    border-radius: 50%;
+    background: var(--light-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .exp-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--deep-teal);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .exp-item h4 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+  }
+  .exp-item p {
+    font-size: 0.78rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  /* ========== GALLERY ========== */
+  .gallery {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 220px);
+    gap: 1rem;
+  }
+  .gallery-item {
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item .gallery-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s var(--ease-smooth);
+  }
+  .gallery-item:hover .gallery-bg { transform: scale(1.06); }
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.4), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .gallery-item:hover::after { opacity: 1; }
+  .gallery-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.4s var(--ease-smooth);
+  }
+  .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+  .gallery-item:nth-child(1) { grid-column: span 2; }
+  .gallery-item:nth-child(4) { grid-column: span 2; }
+  /* Gradient placeholder images */
+  .gi-1 .gallery-bg { background: linear-gradient(135deg, #2A5D5E, #5BA3A4, #89C4C5); }
+  .gi-2 .gallery-bg { background: linear-gradient(135deg, #C9A96E, #E8DFD4, #F5F0EB); }
+  .gi-3 .gallery-bg { background: linear-gradient(135deg, #3D8384, #2A5D5E, #1e4a4b); }
+  .gi-4 .gallery-bg { background: linear-gradient(135deg, #E8DFD4, #C4B5A4, #C9A96E); }
+  .gi-5 .gallery-bg { background: linear-gradient(135deg, #5BA3A4, #3D8384, #C9A96E); }
+
+  /* ========== LOCATION ========== */
+  .location {
+    background: var(--dark);
+    color: var(--white);
+    padding: 7rem 4rem;
+  }
+  .location-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .location-text .section-label { color: var(--gold); }
+  .location-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.6rem);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .location-text p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2rem;
+  }
+  .nearby-list { display: flex; flex-direction: column; gap: 1rem; }
+  .nearby-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nearby-item .ni-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  .nearby-item .ni-dist {
+    font-size: 0.72rem;
+    font-weight: 200;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+  }
+  .location-map {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #1e3a3b, #2A5D5E, #3D8384);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .map-placeholder {
+    text-align: center;
+    z-index: 2;
+  }
+  .map-placeholder svg {
+    width: 48px;
+    height: 48px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.2;
+    margin-bottom: 1rem;
+  }
+  .map-placeholder p {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+  }
+  .location-map::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ========== FAQ ========== */
+  .faq {
+    padding: 8rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .faq-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--sand);
+    padding: 1.5rem 0;
+  }
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+    user-select: none;
+  }
+  .faq-question h4 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--dark);
+    transition: color 0.3s;
+  }
+  .faq-question:hover h4 { color: var(--deep-teal); }
+  .faq-toggle {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border: 1px solid var(--warm-stone);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  .faq-toggle svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--warm-stone);
+    fill: none;
+    stroke-width: 2;
+    transition: transform 0.3s;
+  }
+  .faq-item.active .faq-toggle {
+    border-color: var(--deep-teal);
+    background: var(--deep-teal);
+  }
+  .faq-item.active .faq-toggle svg {
+    stroke: var(--white);
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s var(--ease-smooth), padding 0.4s;
+  }
+  .faq-item.active .faq-answer {
+    max-height: 200px;
+    padding-top: 1rem;
+  }
+  .faq-answer p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-body);
+  }
+
+  /* ========== CTA BANNER ========== */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--deep-teal), var(--soft-teal));
+    padding: 6rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .cta-banner .section-label { color: rgba(255,255,255,0.5); }
+  .cta-banner h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .cta-banner .cta-sub {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  .cta-banner .btn-gold {
+    display: inline-block;
+    padding: 1rem 3rem;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.35s;
+    position: relative;
+  }
+  .cta-banner .btn-gold:hover {
+    background: transparent;
+    color: var(--white);
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.6);
+    padding: 5rem 4rem 2.5rem;
+  }
+  .footer-top {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .footer-brand .nav-logo {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--white);
+    font-size: 1.4rem;
+  }
+  .footer-brand p {
+    font-size: 0.8rem;
+    font-weight: 200;
+    line-height: 1.75;
+    max-width: 280px;
+  }
+  .footer-col h5 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    font-weight: 400;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 200;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.6rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.68rem;
+    font-weight: 200;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-bottom a {
+    color: rgba(255,255,255,0.3);
+    transition: color 0.3s;
+  }
+  .footer-bottom a:hover { color: var(--gold); }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .container { padding: 0 3rem; }
+    .positioning-inner,
+    .room-showcase,
+    .checkin,
+    .location-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .exp-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 180px);
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 1; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .mobile-nav { display: flex; }
+    .intro, .pillars, .room-section, .experience,
+    .gallery, .location, .faq, .cta-banner { padding: 5rem 1.5rem; }
+    .checkin { padding: 5rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .exp-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, 160px);
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 1; }
+    .positioning-stats { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    .hero-title { letter-spacing: 0.03em; }
+    .location-inner { grid-template-columns: 1fr; }
+    .room-showcase { grid-template-columns: 1fr; }
+    .pos-card-stack { aspect-ratio: 1; }
+  }
+  @media (max-width: 480px) {
+    .exp-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 180px); }
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(4) { grid-column: span 1; }
+    .positioning-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav id="nav">
+  <a href="#" class="nav-logo">AERITHA</a>
+  <div class="nav-links">
+    <a href="#about">Story</a>
+    <a href="#rooms">Room</a>
+    <a href="#checkin">Check-in</a>
+    <a href="#experience">Experience</a>
+    <a href="#location">Location</a>
+    <a href="#faq">FAQ</a>
+    <a href="#book" class="nav-book">Book Now</a>
+  </div>
+  <div class="nav-hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="closeMobile()">Story</a>
+  <a href="#rooms" onclick="closeMobile()">Room</a>
+  <a href="#checkin" onclick="closeMobile()">Check-in</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#location" onclick="closeMobile()">Location</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#book" onclick="closeMobile()" style="color: var(--gold);">Book Now</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Ungasan · Bali · Indonesia</p>
+    <h1 class="hero-title">Aeritha</h1>
+    <div class="hero-line"></div>
+    <p class="hero-subtitle">Where the breeze meets the soul</p>
+    <a href="#rooms" class="hero-cta">Discover Your Stay</a>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ========== INTRO ========== -->
+<section class="intro reveal" id="about">
+  <p class="section-label">A Place to Breathe</p>
+  <h2>An intimate sanctuary of 40 rooms nestled in the clifftop serenity of Ungasan</h2>
+  <div class="gold-line center"></div>
+  <p>
+    Aeritha draws its name from the air itself — light, free, and effortless.
+    Here, modern technology meets Balinese warmth. With seamless self check-in
+    and thoughtfully designed spaces, your only task is to arrive.
+    We take care of the rest.
+  </p>
+</section>
+
+<!-- ========== FEATURES / PILLARS ========== -->
+<section class="pillars">
+  <div class="pillars-grid">
+    <div class="pillar-card reveal reveal-delay-1">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Seamless Arrival</h3>
+      <p>Self check-in technology means no queues, no waiting. Your room is ready when you are — day or night.</p>
+    </div>
+    <div class="pillar-card reveal reveal-delay-2">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>24/7 Freedom</h3>
+      <p>Come and go as you please. Digital access, smart room controls, and round-the-clock concierge at your fingertips.</p>
+    </div>
+    <div class="pillar-card reveal reveal-delay-3">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 12h2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4h2"/><path d="M5 20V8"/><path d="M19 20V8"/><rect x="5" y="12" width="14" height="8" rx="1"/></svg>
+      </div>
+      <h3>Rooftop Pool & Bar</h3>
+      <p>An intimate infinity plunge pool with panoramic views, sun loungers, and a poolside bar for golden hour cocktails.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== POSITIONING / WHY AERITHA ========== -->
+<section class="positioning" id="why">
+  <div class="positioning-inner">
+    <div class="positioning-text reveal">
+      <p class="section-label">Smart Budget-Boutique</p>
+      <h2>Design like a boutique. Price like a budget. Operate like a tech startup.</h2>
+      <p>
+        Aeritha bridges the gap between basic budget hotels and overpriced chains.
+        By replacing traditional overhead with smart technology, we deliver a curated
+        boutique experience at a fraction of the usual price.
+      </p>
+      <div class="positioning-stats">
+        <div class="stat-item">
+          <span class="stat-num">40</span>
+          <span class="stat-label">Rooms</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">$25</span>
+          <span class="stat-label">From / Night</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">30s</span>
+          <span class="stat-label">Check-in</span>
+        </div>
+      </div>
+    </div>
+    <div class="positioning-visual reveal reveal-delay-2">
+      <div class="pos-card-stack">
+        <div class="pos-card">
+          <p class="pos-card-label">Pillar One</p>
+          <p class="pos-card-title">Design Quality</p>
+          <p class="pos-card-desc">Every touchpoint is curated — from brand identity to room interiors, creating a boutique atmosphere at every turn.</p>
+        </div>
+        <div class="pos-card">
+          <p class="pos-card-label">Pillar Two</p>
+          <p class="pos-card-title">Smart Pricing</p>
+          <p class="pos-card-desc">50–70% below comparable boutique hotels through operational efficiency, not by cutting guest experience.</p>
+        </div>
+        <div class="pos-card">
+          <p class="pos-card-label">Pillar Three</p>
+          <p class="pos-card-title">Tech-First</p>
+          <p class="pos-card-desc">Self check-in, smart locks, digital concierge — technology handles the routine so staff can focus on you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ROOM ========== -->
+<section class="room-section" id="rooms">
+  <div class="room-header reveal">
+    <p class="section-label">Our Room</p>
+    <h2 class="section-title" style="color: var(--white);">The Angin Room</h2>
+  </div>
+  <div class="room-showcase">
+    <div class="room-visual reveal">
+      <div class="room-visual-pattern"></div>
+      <div class="room-visual-content">
+        <p class="room-type-label">Standard · 40 Rooms</p>
+        <div class="room-visual-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>
+        </div>
+        <h3>Angin Room</h3>
+      </div>
+    </div>
+    <div class="room-details reveal reveal-delay-2">
+      <h3>One room type. Perfectly designed.</h3>
+      <p class="room-tagline">Named after the Balinese word for wind — light, effortless, free.</p>
+      <div class="room-specs">
+        <div class="room-spec">
+          <div class="room-spec-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M2 12h20"/><path d="M12 2v20"/></svg></div>
+          <div class="room-spec-text"><h4>24.5 m²</h4><span>3.5m × 7m · Thoughtfully compact</span></div>
+        </div>
+        <div class="room-spec">
+          <div class="room-spec-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="room-spec-text"><h4>Smart Lock</h4><span>Digital code · No physical key needed</span></div>
+        </div>
+        <div class="room-spec">
+          <div class="room-spec-icon"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg></div>
+          <div class="room-spec-text"><h4>High-Speed WiFi</h4><span>Work-ready connectivity throughout</span></div>
+        </div>
+        <div class="room-spec">
+          <div class="room-spec-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M8 7l4-4 4 4"/><path d="M4 14h16"/></svg></div>
+          <div class="room-spec-text"><h4>Rainfall Shower</h4><span>Premium bath amenities included</span></div>
+        </div>
+      </div>
+      <div class="room-price-bar">
+        <span class="price">$25 – $32</span>
+        <span class="price-note">per night · taxes included</span>
+      </div>
+      <a href="#book" class="btn-primary">Reserve Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SELF CHECK-IN ========== -->
+<section class="checkin" id="checkin">
+  <div class="checkin-visual reveal">
+    <div class="phone-mockup">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-header">
+          <p class="ph-logo">Aeritha</p>
+          <p class="ph-sub">Welcome, Guest</p>
+        </div>
+        <div class="phone-card">
+          <p class="pc-label">Your Room</p>
+          <p class="pc-value">Angin Room · 305</p>
+        </div>
+        <div class="phone-card">
+          <p class="pc-label">Check-in</p>
+          <p class="pc-value">Feb 27, 2026</p>
+        </div>
+        <div class="phone-card">
+          <p class="pc-label">Access Code</p>
+          <p class="pc-value">●●●● 7291</p>
+        </div>
+        <div class="phone-btn">Unlock Room</div>
+      </div>
+    </div>
+  </div>
+  <div class="checkin-content reveal reveal-delay-2">
+    <p class="section-label">Effortless Check-in</p>
+    <h2>Your key is in your pocket</h2>
+    <p>
+      No front desk. No paperwork. Just pure, frictionless arrival.
+      Our digital check-in system sends your room access directly to
+      your phone — so you can go from airport to sunset in minutes.
+    </p>
+    <div class="checkin-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h4>Book Online</h4>
+          <p>Reserve via our website, Booking.com, Agoda, or Airbnb.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h4>Receive Your Code</h4>
+          <p>A digital room key is sent via email, SMS, or WhatsApp — 24h before arrival.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h4>Walk In & Unwind</h4>
+          <p>Enter your code, unlock your room. Total check-in time: under 30 seconds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== EXPERIENCE ========== -->
+<section class="experience" id="experience">
+  <div class="reveal">
+    <p class="section-label">Ungasan Experience</p>
+    <h2 class="section-title">Beyond Your Room</h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-item reveal reveal-delay-1">
+      <div class="exp-icon">
+        <svg viewBox="0 0 24 24"><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c0-6 3-12 3-12"/><circle cx="12" cy="6" r="3"/></svg>
+      </div>
+      <h4>Rooftop Pool</h4>
+      <p>Infinity plunge pool with panoramic Ungasan views and sunset cocktails.</p>
+    </div>
+    <div class="exp-item reveal reveal-delay-2">
+      <div class="exp-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/><path d="M4.93 4.93l14.14 14.14"/></svg>
+      </div>
+      <h4>Morning Yoga</h4>
+      <p>Complimentary poolside sessions with ocean views at dawn.</p>
+    </div>
+    <div class="exp-item reveal reveal-delay-3">
+      <div class="exp-icon">
+        <svg viewBox="0 0 24 24"><path d="M2 20h20"/><path d="M5 20V10l7-7 7 7v10"/><path d="M14 20v-4a2 2 0 0 0-4 0v4"/></svg>
+      </div>
+      <h4>Surf & Shore</h4>
+      <p>Curated surf lessons and hidden beach excursions nearby.</p>
+    </div>
+    <div class="exp-item reveal reveal-delay-4">
+      <div class="exp-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-2.24-9-5v-1c0-2.76 4.03-5 9-5s9 2.24 9 5v1c0 2.76-4.03 5-9 5z"/><path d="M12 11c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+      </div>
+      <h4>Spa Rituals</h4>
+      <p>Traditional Balinese treatments using local botanicals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GALLERY ========== -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header reveal">
+    <p class="section-label">Visual Journey</p>
+    <h2 class="section-title">A Glimpse of Aeritha</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item gi-1 reveal">
+      <div class="gallery-bg"></div>
+      <span class="gallery-caption">Rooftop Infinity Pool</span>
+    </div>
+    <div class="gallery-item gi-2 reveal reveal-delay-1">
+      <div class="gallery-bg"></div>
+      <span class="gallery-caption">Angin Room Interior</span>
+    </div>
+    <div class="gallery-item gi-3 reveal reveal-delay-2">
+      <div class="gallery-bg"></div>
+      <span class="gallery-caption">Ungasan Coastline</span>
+    </div>
+    <div class="gallery-item gi-4 reveal reveal-delay-1">
+      <div class="gallery-bg"></div>
+      <span class="gallery-caption">Poolside Bar</span>
+    </div>
+    <div class="gallery-item gi-5 reveal reveal-delay-2">
+      <div class="gallery-bg"></div>
+      <span class="gallery-caption">Bali Sunrise</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LOCATION ========== -->
+<section class="location" id="location">
+  <div class="location-inner">
+    <div class="location-text reveal">
+      <p class="section-label">Ungasan, Bali</p>
+      <h2>Perched on Bali's most coveted clifftop</h2>
+      <p>
+        Ungasan sits on the Bukit Peninsula — Bali's southern limestone plateau.
+        Once considered remote, it's now home to world-class beach clubs,
+        clifftop venues, and luxury resorts. Aeritha places you right in the heart of it.
+      </p>
+      <div class="nearby-list">
+        <div class="nearby-item">
+          <span class="ni-name">Ngurah Rai Airport</span>
+          <span class="ni-dist">25 min drive</span>
+        </div>
+        <div class="nearby-item">
+          <span class="ni-name">Pandawa Beach</span>
+          <span class="ni-dist">10 min drive</span>
+        </div>
+        <div class="nearby-item">
+          <span class="ni-name">Melasti Beach</span>
+          <span class="ni-dist">12 min drive</span>
+        </div>
+        <div class="nearby-item">
+          <span class="ni-name">Sundays Beach Club</span>
+          <span class="ni-dist">8 min drive</span>
+        </div>
+        <div class="nearby-item">
+          <span class="ni-name">Four Points by Sheraton</span>
+          <span class="ni-dist">Nearby</span>
+        </div>
+      </div>
+    </div>
+    <div class="location-map reveal reveal-delay-2">
+      <div class="map-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p>Ungasan, Bukit Peninsula</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="faq" id="faq">
+  <div class="faq-header reveal">
+    <p class="section-label">Questions</p>
+    <h2 class="section-title">Good to Know</h2>
+  </div>
+  <div class="faq-item reveal">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>How does self check-in work?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>After booking, you'll receive a unique digital access code via email, SMS, or WhatsApp 24 hours before arrival. Simply enter the code on your room's smart lock — no front desk, no waiting. Takes under 30 seconds.</p>
+    </div>
+  </div>
+  <div class="faq-item reveal reveal-delay-1">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>Is there staff on-site if I need help?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>Yes. While check-in is automated, a small on-site team of 2–3 staff handles housekeeping, maintenance, pool bar service, and any personal assistance you may need.</p>
+    </div>
+  </div>
+  <div class="faq-item reveal reveal-delay-2">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>What makes Aeritha different from a regular budget hotel?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>Unlike typical budget hotels, every aspect of Aeritha is intentionally designed — from the brand identity to room interiors. We deliver boutique-quality design at budget-friendly prices by using technology to reduce operational overhead, not by cutting corners on your experience.</p>
+    </div>
+  </div>
+  <div class="faq-item reveal reveal-delay-3">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>Can I check in at any time?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>Absolutely. Our digital access system works 24/7. Whether your flight lands at midnight or sunrise, your room is always ready for you.</p>
+    </div>
+  </div>
+  <div class="faq-item reveal">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>Do I need to download an app?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>No app download required. Your access code works directly on the smart lock. Everything you need is delivered via standard messaging channels like email, SMS, or WhatsApp.</p>
+    </div>
+  </div>
+  <div class="faq-item reveal">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <h4>Is the rooftop pool included in my stay?</h4>
+      <div class="faq-toggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="faq-answer">
+      <p>Yes, the rooftop infinity pool is complimentary for all guests. The poolside bar offers drinks and light bites at additional cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA BANNER ========== -->
+<section class="cta-banner" id="book">
+  <div class="reveal">
+    <p class="section-label">Ready to Arrive?</p>
+    <h2>Your breeze awaits</h2>
+    <p class="cta-sub">From $25/night · Self check-in · Rooftop pool included</p>
+    <a href="#" class="btn-gold">Book Your Stay</a>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">AERITHA</a>
+      <p>A 40-room smart budget-boutique retreat in Ungasan, Bali. Where modern ease meets island soul.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Stay</h5>
+      <a href="#rooms">The Angin Room</a>
+      <a href="#checkin">Self Check-in</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#book">Book Now</a>
+    </div>
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <a href="#experience">Experiences</a>
+      <a href="#location">Location</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <a href="mailto:hello@aeritha.com">hello@aeritha.com</a>
+      <a href="#">Instagram</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aeritha Ungasan. All rights reserved.</span>
+    <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile nav
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobile() {
+    hamburger.classList.remove('active');
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Intersection Observer for reveal animations
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // FAQ accordion
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const isActive = item.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.faq-item.active').forEach(i => i.classList.remove('active'));
+    // Open clicked (if wasn't active)
+    if (!isActive) item.classList.add('active');
+  }
+
+  // Smooth anchor scrolling with offset
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        const offset = 80;
+        const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
